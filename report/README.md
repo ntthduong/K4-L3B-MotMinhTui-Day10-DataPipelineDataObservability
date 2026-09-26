@@ -103,40 +103,15 @@ Trong `individual_report.md`, mỗi thành viên cần phân biệt rõ:
 - phần chưa chạy được và blocker còn lại;
 - bằng chứng thực tế tương ứng với từng kết luận.
 
-## 5. Hướng dẫn làm bài nhóm
+## 5. Individual Submission Ownership
 
-### Nhóm 3 thành viên
+Báo cáo được viết theo hình thức Individual Submission. Một người chịu trách nhiệm toàn bộ pipeline với vai trò **Full Pipeline Owner**.
 
-| Thành viên   | Vai trò chính                  | Nhiệm vụ sở hữu                                                        | Output bàn giao                                                     |
-| -------------- | -------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Thành viên 1 | Data ingestion & cleaning owner  | `crossref.py`, `cleaning.py`; thống nhất raw/clean schema            | Raw records, cleaned dataset và mô tả cleaning rules              |
-| Thành viên 2 | Evaluation & observability owner | `testset.py`, `quality.py`, `reporting.py`                           | Evaluation set, quality/freshness results và report functions       |
-| Thành viên 3 | Corruption & integration owner   | `corruption.py`, `phase1.py`, `corruption_flow.py`; chạy tích hợp | Baseline/corrupted/repaired artifacts, metrics và comparison report |
+| Họ và tên | Vai trò chính | Nhiệm vụ sở hữu | Output bàn giao |
+| --- | --- | --- | --- |
+| Nguyễn Thị Thùy Dương | Full Pipeline Owner | `crossref.py`, `cleaning.py`, `quality.py`, `testset.py`, `reporting.py`, `corruption.py`, `phase1.py`, `corruption_flow.py` | Raw/clean data, quality/freshness artifacts, evaluation metrics, corruption/repair report |
 
-Với nhóm 3, khối tích hợp tương đối lớn. Thành viên 1 hỗ trợ kiểm tra dữ liệu repair; thành viên 2 hỗ trợ xác minh metrics và báo cáo cho thành viên 3.
-
-### Nhóm 4 thành viên — khuyến nghị
-
-| Thành viên   | Vai trò chính                   | Nhiệm vụ sở hữu                                      | Output bàn giao                                          |
-| -------------- | --------------------------------- | -------------------------------------------------------- | --------------------------------------------------------- |
-| Thành viên 1 | Source owner                      | `crossref.py`; fetch, retry, parse và lưu raw data   | Raw response, raw records và schema đầu vào           |
-| Thành viên 2 | Data model & evaluation-set owner | `cleaning.py`, `testset.py`                          | Cleaned dataset,`text_for_embedding` và evaluation set |
-| Thành viên 3 | Observability owner               | `quality.py`, `reporting.py`                         | Quality checks, freshness và báo cáo Markdown          |
-| Thành viên 4 | Corruption & integration owner    | `corruption.py`, `phase1.py`, `corruption_flow.py` | Hai flow chạy end-to-end và bộ metrics so sánh        |
-
-Đây là cấu hình cân bằng nhất cho workload hiện tại. Thành viên 4 chịu trách nhiệm điều phối tích hợp, không phải tự sửa toàn bộ lỗi của các module khác.
-
-### Nhóm 5 thành viên
-
-| Thành viên   | Vai trò chính                       | Nhiệm vụ sở hữu                                              | Output bàn giao                                                    |
-| -------------- | ------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Thành viên 1 | Source owner                          | `crossref.py`                                                  | Raw response, raw records và schema                                |
-| Thành viên 2 | Cleaning & test-set owner             | `cleaning.py`, `testset.py`                                  | Cleaned dataset và evaluation set                                  |
-| Thành viên 3 | Observability owner                   | `quality.py`, `reporting.py`                                 | Quality/freshness artifacts và report functions                    |
-| Thành viên 4 | Corruption & repair owner             | `corruption.py`; kiểm tra dữ liệu corrupted/repaired        | Corruption log, corruption scenarios và dữ liệu repair hợp lệ  |
-| Thành viên 5 | Pipeline integration & evidence owner | `phase1.py`, `corruption_flow.py`; tái hiện toàn bộ flow | Lệnh chạy, metrics, comparison report và bằng chứng tích hợp |
-
-Thành viên 5 không chỉ làm tài liệu. Vai trò này chịu trách nhiệm kỹ thuật cho orchestration, reproducibility và kiểm tra sự nhất quán giữa report với artifact.
+Khi viết báo cáo, cần phân biệt rõ phần đã hoàn thành và phần chưa có artifact. Không ghi metric hoặc kết luận cho checkpoint chưa được chạy và xác minh.
 
 ## 6. Phối hợp và tích hợp
 

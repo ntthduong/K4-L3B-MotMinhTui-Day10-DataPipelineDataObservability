@@ -1,0 +1,251 @@
+{
+  "report_name": "corrupted",
+  "success": false,
+  "checks": {
+    "row_count": false,
+    "paper_id_not_null": true,
+    "paper_id_unique": false,
+    "title_not_null": true,
+    "summary_length_valid": false,
+    "freshness_sla": false
+  },
+  "freshness": {
+    "latest_published": "2026-06-12",
+    "oldest_published": "2020-01-01",
+    "stale_rows": 8,
+    "total_rows": 22,
+    "stale_ratio": 0.36363636363636365,
+    "threshold_days": 180,
+    "max_stale_ratio": 0.25,
+    "is_fresh": false
+  },
+  "gx_results": [
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_table_row_count_to_be_between",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "min_value": 24,
+          "max_value": 24
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "observed_value": 22
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 22,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 22,
+        "unexpected_count": 6,
+        "unexpected_percent": 27.27272727272727,
+        "partial_unexpected_list": [
+          "10.1145/3637528.3671824",
+          "10.1145/3637528.3671823",
+          "10.1145/3637528.3671822",
+          "10.1145/3637528.3671824",
+          "10.1145/3637528.3671823",
+          "10.1145/3637528.3671822"
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 27.27272727272727,
+        "unexpected_percent_nonmissing": 27.27272727272727,
+        "partial_unexpected_counts": [
+          {
+            "value": "10.1145/3637528.3671822",
+            "count": 2
+          },
+          {
+            "value": "10.1145/3637528.3671823",
+            "count": 2
+          },
+          {
+            "value": "10.1145/3637528.3671824",
+            "count": 2
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          2,
+          19,
+          20,
+          21
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "column": "title"
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 22,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "column": "title",
+          "min_value": 8,
+          "max_value": 300
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 22,
+        "unexpected_count": 3,
+        "unexpected_percent": 13.636363636363635,
+        "partial_unexpected_list": [
+          "Bad",
+          "Bad",
+          "Bad"
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 13.636363636363635,
+        "unexpected_percent_nonmissing": 13.636363636363635,
+        "partial_unexpected_counts": [
+          {
+            "value": "Bad",
+            "count": 3
+          }
+        ],
+        "partial_unexpected_index_list": [
+          7,
+          8,
+          9
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "papers_source_corrupted-papers_asset_corrupted",
+          "column": "summary",
+          "min_value": 40,
+          "max_value": 5000
+        },
+        "meta": {},
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 22,
+        "unexpected_count": 6,
+        "unexpected_percent": 27.27272727272727,
+        "partial_unexpected_list": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 27.27272727272727,
+        "unexpected_percent_nonmissing": 27.27272727272727,
+        "partial_unexpected_counts": [
+          {
+            "value": "",
+            "count": 6
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          2,
+          19,
+          20,
+          21
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    }
+  ]
+}

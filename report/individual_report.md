@@ -1,164 +1,155 @@
-# Member Role Report — Day 10: Data Pipeline & Data Observability
+# Báo Cáo Vai Trò Cá Nhân — Day 10: Data Pipeline & Data Observability
 
-> Mỗi thành viên trong nhóm tự hoàn thành mẫu này để báo cáo đúng vai trò, phần việc và mức hiểu của mình. Không sao chép nguyên báo cáo chung hoặc báo cáo của thành viên khác. Thay nội dung trong dấu `[ ]` và xóa các dòng hướng dẫn không cần thiết trước khi nộp.
+## 1. Thông Tin Cá Nhân
 
-## 1. Thông tin cá nhân
+| Thông tin | Nội dung |
+| --- | --- |
+| Họ và tên | Nguyễn Thị Thùy Dương |
+| MSSV | 2A202602905 |
+| Khóa/Lớp | K4-L3B |
+| Tên nhóm | MotMinhTui |
+| Hình thức | Individual Submission |
+| Vai trò chính | Full Pipeline Owner |
+| Repository | https://github.com/ntthduong/K4-L3B-MotMinhTui-Day10-Data-Pipeline-Data-Observability |
+| Ngày hoàn thành | 2026-09-26 |
 
-| Thông tin         | Nội dung                  |
-| ------------------ | -------------------------- |
-| Họ và tên       | [Họ và tên]             |
-| MSSV               | [MSSV]                     |
-| Khóa/Lớp         | [K3 hoặc K4]              |
-| Tên nhóm         | [Tên hoặc mã nhóm]     |
-| Vai trò chính    | [Vai trò]                 |
-| Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | [YYYY-MM-DD]               |
+## 2. Vai Trò Và Phạm Vi Công Việc
 
-## 2. Vai trò và phạm vi công việc
+### Phần Việc Sở Hữu
 
-### Phần việc sở hữu
+| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao | Trạng thái |
+| --- | --- | --- | --- | --- |
+| Raw ingestion | `src/ingestion/crossref.py` | Crossref API/local snapshot | `data/raw/crossref_response.json`, `data/raw/crossref_records.json` | Hoàn thành CP0 |
+| Data cleaning | `src/ingestion/cleaning.py` | Raw `PaperRecord` list | `data/clean/papers_clean.csv`, `data/clean/papers_clean.json` | Hoàn thành CP1 |
+| Data observability | `src/observability/quality.py` | Clean/corrupted/repaired dataframe | Quality và freshness reports | Hoàn thành CP1, CP4, CP5 |
+| Test set | `src/evaluation/testset.py` | Clean dataframe | `data/eval/test_set.json` | Hoàn thành CP2 |
+| Vector index | `src/retrieval/index.py` | Clean/corrupted/repaired dataframe | ChromaDB collections và embedding manifests | Hoàn thành CP2, CP4, CP5 |
+| Baseline pipeline | `src/pipelines/phase1.py` | Raw records và config | Baseline metrics, answers, phase report | Hoàn thành CP3 |
+| Corruption và repair | `src/ingestion/corruption.py`, `src/pipelines/corruption_flow.py` | Clean data và raw records | Corrupted/repaired metrics, comparison report | Hoàn thành CP4, CP5 |
+| Reporting | `src/observability/reporting.py`, `report/*.md` | Metrics và quality artifacts | Markdown reports | Hoàn thành |
 
-| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái                                 |
-| ------------------ | --------------------- | ---------------- | ----------------- | -------------------------------------------- |
-| [Phần việc]      | [File/hàm]           | [Input]          | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
-| [Phần việc]      | [File/hàm]           | [Input]          | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
+### Việc Hỗ Trợ Ngoài Phạm Vi Chính
 
-Chỉ nhận ownership cho phần bạn trực tiếp thực hiện. Liên hệ rõ phần việc của bạn với đầu vào, đầu ra và các thành viên phụ thuộc vào phần đó.
+| Hoạt động | Module được hỗ trợ | Kết quả |
+| --- | --- | --- |
+| Debug encoding trên Windows PowerShell | CP0-CP5 verification commands | Dùng `$env:PYTHONIOENCODING='utf-8'` để in tiếng Việt không lỗi |
+| Kiểm tra artifact sau từng checkpoint | `data/clean/`, `data/results/`, `data/quality/`, `data/reports/` | Đảm bảo số liệu trong báo cáo khớp file JSON/Markdown thực tế |
 
-### Việc hỗ trợ ngoài phạm vi chính
+## 3. Kết Quả Theo Vai Trò
 
-| Hoạt động                         | Thành viên/module được hỗ trợ | Kết quả                    |
-| ------------------------------------ | ------------------------------------ | ---------------------------- |
-| [Debug/tích hợp/tài liệu] | [Tên hoặc module] | [Kết quả và bằng chứng] |
+| Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao | Cách xác minh |
+| --- | --- | --- | --- |
+| Hoàn thiện parser và loader Crossref | `src/ingestion/crossref.py` | 24 normalized records | `fetch_source_records()` trả về 24 bài báo |
+| Hoàn thiện cleaning dataframe | `src/ingestion/cleaning.py` | Clean dataframe 24 dòng | `data/clean/papers_clean.json` |
+| Hoàn thiện GX quality gate và freshness | `src/observability/quality.py` | Quality status baseline `True` | `data/quality/baseline_quality_report.json` |
+| Sinh test set benchmark | `src/evaluation/testset.py` | 10 câu hỏi, 4 question types | `data/eval/test_set.json` |
+| Build baseline index | `LocalEmbeddingIndex.build()` | ChromaDB collection `papers-baseline`, 24 docs | `data/embeddings/papers_embeddings.json` |
+| Chạy baseline pipeline | `src/pipelines/phase1.py` | Hit rate 1.0000, token F1 1.0000 | `data/results/baseline_metrics.json` |
+| Tiêm corruption | `src/ingestion/corruption.py` | 6 loại lỗi, quality fail | `data/results/corruption_log.json` |
+| Repair từ raw records | `src/pipelines/corruption_flow.py` | Repaired metrics quay lại baseline | `data/results/repaired_metrics.json` |
 
-## 3. Kết quả theo vai trò
+Output quan trọng nhất là bộ so sánh ba trạng thái trong `data/reports/corruption_report.md`: baseline đạt 1.0000, corrupted giảm xuống 0.5000 hit rate, repaired phục hồi lại 1.0000.
 
-| Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao       | Cách xác minh         |
-| --------------------------- | ----------------------------- | ------------------------- | ----------------------- |
-| [Mô tả cụ thể] | [Đường dẫn file] | [Artifact/metrics/report] | [Lệnh/artifact] |
-| [Mô tả cụ thể] | [Đường dẫn file] | [Artifact/metrics/report] | [Lệnh/artifact] |
+## 4. Giải Thích Kỹ Thuật Đã Thực Hiện
 
-Nêu một output cụ thể mà phần việc của bạn tạo ra hoặc giúp xác minh:
+### Vấn Đề Cần Giải Quyết
 
-[Mô tả artifact, metric, report hoặc kết quả tích hợp.]
+Pipeline RAG phụ thuộc trực tiếp vào chất lượng dữ liệu. Nếu dữ liệu bị thiếu, trùng lặp, stale hoặc nhiễu, retrieval và câu trả lời có thể suy giảm mà hệ thống không nhất thiết crash. Vì vậy, cần xây dựng pipeline có lineage rõ ràng, quality gate tự động, benchmark evaluation và cơ chế repair từ nguồn raw đáng tin cậy.
 
-## 4. Giải thích phần kỹ thuật đã thực hiện
+### Cách Triển Khai
 
-### Vấn đề cần giải quyết
+Ingestion ưu tiên đọc normalized snapshot local khi không yêu cầu refresh để đảm bảo tái hiện ổn định. Parser chuẩn hóa DOI, title, abstract, authors, categories và ngày xuất bản thành `PaperRecord`. Cleaning loại XML/JATS tags, normalize whitespace, parse date, tính `age_days`, tạo các cột helper và build `text_for_embedding`. Quality gate dùng Great Expectations 1.x cho row count, not-null, uniqueness và text length checks; freshness đo bằng tỷ lệ stale rows có `age_days > 180`.
 
-[Phần của bạn giải quyết vấn đề gì trong pipeline?]
+Evaluation set gồm 10 câu hỏi thuộc 4 loại: `summary`, `authors`, `date`, `categories`. Cùng test set được dùng cho baseline, corrupted và repaired để so sánh công bằng. Corruption suite tiêm 6 lỗi có chủ đích. Repair flow không sửa trực tiếp corrupted dataset mà rebuild dữ liệu từ `data/raw/crossref_records.json`, sau đó re-clean, re-index và evaluate lại.
 
-### Cách triển khai
+### Input, Output Và Contract
 
-[Mô tả thuật toán, quy tắc dữ liệu, orchestration hoặc quyết định chính. Không chỉ chép lại tên hàm.]
+| Thành phần | Mô tả |
+| --- | --- |
+| Input | `data/raw/crossref_response.json`, `data/raw/crossref_records.json`, clean dataframe, test set |
+| Output | Clean/corrupted/repaired datasets, Chroma indexes, metrics JSON, quality JSON, reports |
+| Module phụ thuộc | `core.config`, `core.utils`, `ingestion.crossref`, `retrieval.index` |
+| Module sử dụng output | `evaluation.metrics`, `observability.quality`, `observability.reporting` |
+| Điều kiện lỗi cần xử lý | API rate limit, missing fields, duplicate DOI, invalid date, stale records, noisy text |
 
-### Input, output và contract
-
-| Thành phần                   | Mô tả                                     |
-| ------------------------------ | ------------------------------------------- |
-| Input                          | [Schema, artifact hoặc tham số]           |
-| Output                         | [Schema, artifact hoặc giá trị trả về] |
-| Module phụ thuộc             | [Module/file liên quan]                    |
-| Module sử dụng output        | [Module/file liên quan]                    |
-| Điều kiện lỗi cần xử lý | [Trường hợp thực tế]                   |
-
-### Cách xác minh
+### Cách Xác Minh
 
 ```bash
-[Ghi lệnh thực tế đã chạy]
+$env:PYTHONIOENCODING='utf-8'; python script/run_phase1.py
+$env:PYTHONIOENCODING='utf-8'; python script/run_corruption_flow.py
 ```
 
-- **Kết quả mong đợi:** [Mô tả.]
-- **Kết quả thực tế:** [Mô tả.]
-- **Artifact/log:** [Đường dẫn; không chứa secret.]
+- **Kết quả mong đợi:** Baseline chạy thành công; corrupted làm metrics giảm và quality fail; repaired phục hồi metrics và quality.
+- **Kết quả thực tế:** CP0-CP5 đều hoàn thành, artifacts sinh đầy đủ.
+- **Artifact/log:** `data/results/`, `data/quality/`, `data/reports/`, `data/clean/`, `data/embeddings/`.
 
-## 5. Một quyết định kỹ thuật quan trọng
+## 5. Một Quyết Định Kỹ Thuật Quan Trọng
 
-- **Bối cảnh:** [Vấn đề hoặc lựa chọn cần quyết định.]
-- **Các phương án đã cân nhắc:** [Ít nhất hai phương án.]
-- **Phương án đã chọn:** [Lựa chọn.]
-- **Lý do:** [Trade-off về correctness, data quality, reproducibility, cost hoặc độ phức tạp.]
-- **Bằng chứng quyết định phù hợp:** [Metric, artifact hoặc kết quả thử nghiệm.]
+- **Bối cảnh:** Pipeline cần chạy được kể cả khi Crossref API bị rate limit hoặc mất mạng.
+- **Các phương án đã cân nhắc:** Luôn gọi API mỗi lần chạy; hoặc ưu tiên local snapshot và chỉ refresh khi cấu hình yêu cầu.
+- **Phương án đã chọn:** Ưu tiên local snapshot, hỗ trợ API refresh có retry/backoff và fallback.
+- **Lý do:** Tăng reproducibility, giảm phụ thuộc mạng, vẫn giữ khả năng refresh dữ liệu khi cần.
+- **Bằng chứng:** CP0 đọc được 24 bài báo từ artifact local và các pipeline sau tái hiện được cùng kết quả.
 
-## 6. Một lỗi hoặc blocker đã xử lý
+## 6. Một Lỗi Hoặc Blocker Đã Xử Lý
 
-- **Triệu chứng/lỗi nguyên văn:** [Che toàn bộ secret trước khi ghi.]
-- **Lệnh hoặc bước tái hiện:** [Lệnh/bước.]
-- **Nguyên nhân gốc:** [Root cause, không chỉ mô tả triệu chứng.]
-- **Cách xử lý:** [Thay đổi cụ thể.]
-- **Cách xác minh sau khi sửa:** [Lệnh và kết quả.]
-- **Điều học được:** [Bài học kỹ thuật.]
+- **Triệu chứng/lỗi nguyên văn:** `UnicodeEncodeError: 'charmap' codec can't encode character` khi in tiếng Việt trong PowerShell.
+- **Lệnh hoặc bước tái hiện:** Chạy lệnh verify có chuỗi tiếng Việt trên Windows terminal mặc định.
+- **Nguyên nhân gốc:** Python stdout dùng encoding `cp1252`, không encode được một số ký tự tiếng Việt.
+- **Cách xử lý:** Đặt `$env:PYTHONIOENCODING='utf-8'` trước khi chạy lệnh verify.
+- **Cách xác minh sau khi sửa:** Các lệnh CP0-CP5 in đúng kết quả tiếng Việt.
+- **Điều học được:** Cần cấu hình encoding ổn định khi chạy script có Unicode trên Windows.
 
-Nếu chưa xử lý xong:
+## 7. Hiểu Biết Về Luồng End-To-End
 
-- **Phạm vi bị ảnh hưởng:** [Module/artifact.]
-- **Những gì đã loại trừ:** [Các giả thuyết đã kiểm tra.]
-- **Bước tiếp theo:** [Hành động có thể kiểm chứng.]
+1. Dữ liệu đi từ Crossref/local snapshot vào parser, chuyển thành `PaperRecord`, sau đó cleaning tạo dataframe có `text_for_embedding`. Dataframe này được đưa vào ChromaDB để build vector index.
+2. Evaluation set chứa câu hỏi, ground truth và `ground_truth_doc_ids`. Retrieval hit rate kiểm tra liệu các document ID đúng có xuất hiện trong top retrieved docs hay không; answer quality dùng token F1 và judge score.
+3. Quality checks kiểm tra schema/content contract như row count, not-null, uniqueness và length. Freshness monitoring tập trung vào tuổi dữ liệu qua `age_days` và stale ratio.
+4. Cùng test set được dùng cho baseline, corrupted và repaired để đảm bảo khác biệt metric đến từ dữ liệu/index, không đến từ câu hỏi khác nhau.
+5. Repair thành công khi dữ liệu được phục hồi từ raw trusted source, quality/freshness pass lại và repaired metrics quay lại gần hoặc bằng baseline.
 
-## 7. Hiểu biết về luồng end-to-end
+## 8. Phân Tích Kết Quả
 
-Giải thích ngắn gọn bằng lời của bạn:
+### Metrics Chính
 
-1. Dữ liệu đi từ Crossref đến vector index như thế nào?
-2. Evaluation set và ground-truth document IDs dùng để đo retrieval/answer quality ra sao?
-3. Quality checks khác freshness monitoring ở điểm nào trong bài lab?
-4. Vì sao phải dùng cùng test set cho baseline, corrupted và repaired?
-5. Repair được xem là thành công dựa trên artifact và metric nào?
+| Metric/signal | Baseline | Corrupted | Repaired | Nhận xét |
+| --- | ---: | ---: | ---: | --- |
+| `retrieval_hit_rate` | 1.0000 | 0.5000 | 1.0000 | Corruption làm mất/biến dạng tài liệu liên quan, repair phục hồi hoàn toàn |
+| `mean_token_f1` | 1.0000 | 0.7788 | 1.0000 | Summary rỗng/nhiễu làm câu trả lời kém khớp hơn |
+| `judge_accuracy` | 1.0000 | 0.8000 | 1.0000 | Judge phát hiện suy giảm ở corrupted state |
+| `mean_judge_score` | 5.0000 | 4.4000 | 5.0000 | Điểm trung bình giảm khi data bị lỗi |
+| Quality checks | True | False | True | Quality gate phát hiện corruption và pass lại sau repair |
+| Freshness status | True | False | True | Stale ratio vượt ngưỡng ở corrupted và phục hồi sau repair |
 
-**Câu trả lời:**
+### Kết Luận Từ Số Liệu
 
-[Viết câu trả lời tại đây.]
+1. Drop records mới nhất, blank summary, truncate title và duplicate rows làm quality gate fail; đồng thời `retrieval_hit_rate` giảm từ 1.0000 xuống 0.5000.
+2. Stale date làm stale ratio tăng từ 0.0417 lên 0.3636, khiến freshness status chuyển từ `True` sang `False`.
+3. Repair từ raw records làm quality/freshness quay lại `True`, `retrieval_hit_rate` và `mean_token_f1` quay lại 1.0000.
 
-## 8. Phân tích kết quả
+Corruption ảnh hưởng rõ nhất là drop latest records vì một số paper trong test set bị loại khỏi corrupted index, làm retrieval không thể tìm đúng document ID. Kết quả phù hợp với kỳ vọng: quality/freshness phát hiện lỗi trước khi metrics repaired phục hồi.
 
-### Metrics chính
+## 9. Điều Học Được Và Hướng Cải Thiện
 
-| Metric/signal          | Baseline | Corrupted | Repaired | Nhận xét của cá nhân |
-| ---------------------- | -------: | --------: | -------: | ------------------------- |
-| `retrieval_hit_rate` |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `mean_token_f1`      |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `judge_accuracy`     |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `mean_judge_score`   |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| Quality checks         |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| Freshness status       |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
+### Ba Điều Quan Trọng Nhất
 
-### Kết luận từ số liệu
+1. Raw snapshot và normalized records giúp pipeline có data lineage và reproducibility tốt hơn khi API bên ngoài không ổn định.
+2. Data quality nên kết hợp contract checks với freshness SLA vì dữ liệu có thể đúng schema nhưng đã quá cũ.
+3. Chất lượng RAG phụ thuộc trực tiếp vào dữ liệu đầu vào; missing/stale/noisy records có thể gây silent failure nếu không có observability gate.
 
-Hoàn thành hai chuỗi nguyên nhân–bằng chứng sau:
+### Nếu Có Thêm Thời Gian
 
-1. [Data corruption] → [quality/freshness signal thay đổi] → [agent metric thay đổi].
-2. [Repair action] → [quality/freshness signal phục hồi] → [agent metric phục hồi hoặc chưa phục hồi].
+Có thể bật `RUN_RAGAS=1` để bổ sung faithfulness/context metrics, mở rộng test set nhiều hơn 10 câu, và xây dashboard observability để trực quan hóa quality/freshness theo thời gian.
 
-Corruption nào ảnh hưởng rõ nhất và vì sao?
+## 10. Cam Kết Của Thành Viên
 
-[Phân tích dựa trên số liệu.]
+- [x] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [x] Tôi có thể giải thích luồng end-to-end, không chỉ một module riêng lẻ.
+- [x] Mọi kết luận về kết quả đều có artifact hoặc metric để đối chiếu.
+- [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
+- [x] Báo cáo này không phải bản sao nguyên văn của báo cáo khác.
 
-Kết quả nào khác với kỳ vọng ban đầu?
+**Họ và tên:** Nguyễn Thị Thùy Dương
 
-[Nêu kết quả, giả thuyết và cách đã kiểm tra.]
-
-## 9. Điều học được và hướng cải thiện
-
-### Ba điều quan trọng nhất
-
-1. [Điều học được về data pipeline.]
-2. [Điều học được về data quality/observability.]
-3. [Điều học được về ảnh hưởng của data đến RAG agent.]
-
-### Nếu có thêm thời gian
-
-[Nêu một cải thiện cụ thể, lý do và cách đo cải thiện đó.]
-
-## 10. Cam kết của thành viên
-
-Đánh dấu sau khi tự kiểm tra:
-
-- [ ] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
-- [ ] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
-- [ ] Mọi kết luận về kết quả đều có artifact hoặc metric để đối chiếu.
-- [ ] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
-- [ ] Báo cáo không chứa `.env`, API key, token hoặc secret.
-- [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
-
-**Họ và tên:** [Họ và tên]
-**Ngày xác nhận:** [YYYY-MM-DD]
+**Ngày xác nhận:** 2026-09-26
