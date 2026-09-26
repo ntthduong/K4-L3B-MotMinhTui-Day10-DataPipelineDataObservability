@@ -1,4 +1,4 @@
-# Báo Cáo Individual Submission — Day 10: Data Pipeline & Data Observability
+<img width="959" height="543" alt="image" src="https://github.com/user-attachments/assets/13876c89-43c5-4c75-9a0f-7b6bc9ed97ac" /># Báo Cáo Individual Submission — Day 10: Data Pipeline & Data Observability
 
 ## 1. Thông Tin Bài Nộp
 
@@ -6,7 +6,7 @@
 | --- | --- |
 | Khóa/Lớp | K4-L3B |
 | Tên nhóm | MotMinhTui |
-| Repository | https://github.com/ntthduong/K4-L3B-MotMinhTui-Day10-Data-Pipeline-Data-Observability |
+| Repository | https://github.com/ntthduong/K4-L3B-MotMinhTui-Day10-DataPipelineDataObservability |
 | Hình thức | Individual Submission |
 | Ngày hoàn thành | 2026-09-26 |
 
@@ -18,7 +18,11 @@
 
 ## 2. Tóm Tắt Kết Quả
 
-Bài nộp đã hoàn thành các checkpoint chính từ CP0 đến CP5. Pipeline bắt đầu từ dữ liệu Crossref/local snapshot, parse thành `PaperRecord`, làm sạch thành dataframe 24 dòng, tạo `text_for_embedding`, build ChromaDB index bằng `sentence-transformers/all-MiniLM-L6-v2`, sinh bộ test 10 câu hỏi và đánh giá baseline. Baseline đạt `retrieval_hit_rate=1.0000`, `mean_token_f1=1.0000`, quality status `True` và freshness status `True`. Sau đó, pipeline tiêm 6 loại lỗi dữ liệu gồm drop records mới nhất, blank summary, inject noise, truncate title, stale date và duplicate rows. Dữ liệu corrupted làm `retrieval_hit_rate` giảm còn `0.5000`, `mean_token_f1` còn `0.7788`, quality và freshness đều fail. Cuối cùng, repair flow phục hồi dữ liệu từ `data/raw/crossref_records.json`, rebuild clean dataset, rebuilt repaired index và đánh giá lại trên cùng test set. Repaired metrics quay lại baseline với `retrieval_hit_rate=1.0000`, `mean_token_f1=1.0000`, quality `True` và freshness `True`.
+Bài nộp đã hoàn thành các checkpoint chính từ CP0 đến CP5. Pipeline bắt đầu từ dữ liệu Crossref/local snapshot, parse thành `PaperRecord`, làm sạch thành dataframe 24 dòng, tạo `text_for_embedding`, build ChromaDB index bằng `sentence-transformers/all-MiniLM-L6-v2`, sinh bộ test 10 câu hỏi và đánh giá baseline. 
+
+Baseline đạt `retrieval_hit_rate=1.0000`, `mean_token_f1=1.0000`, quality status `True` và freshness status `True`. Sau đó, pipeline tiêm 6 loại lỗi dữ liệu gồm drop records mới nhất, blank summary, inject noise, truncate title, stale date và duplicate rows. Dữ liệu corrupted làm `retrieval_hit_rate` giảm còn `0.5000`, `mean_token_f1` còn `0.7788`, quality và freshness đều fail. 
+
+Cuối cùng, repair flow phục hồi dữ liệu từ `data/raw/crossref_records.json`, rebuild clean dataset, rebuilt repaired index và đánh giá lại trên cùng test set. Repaired metrics quay lại baseline với `retrieval_hit_rate=1.0000`, `mean_token_f1=1.0000`, quality `True` và freshness `True`.
 
 ## 3. Kiến Trúc Và Luồng Dữ Liệu
 
@@ -56,8 +60,8 @@ Crossref API / local snapshot
 
 | Biến/cấu hình | Giá trị sử dụng |
 | --- | --- |
-| `LLM_PROVIDER` | `gemini`, cấu hình qua `.env` |
-| `LLM_MODEL` | `gemini-2.5-flash`, cấu hình qua `.env` |
+| `LLM_PROVIDER` | `openai`, cấu hình qua `.env` |
+| `LLM_MODEL` | `gpt-4o-mini`, cấu hình qua `.env` |
 | Embedding model | `sentence-transformers/all-MiniLM-L6-v2` |
 | Số lượng Crossref records | 24 |
 | Retrieval `top_k` | 4 |
