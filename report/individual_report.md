@@ -10,7 +10,7 @@
 | Tên nhóm | MotMinhTui |
 | Hình thức | Individual Submission |
 | Vai trò chính | Full Pipeline Owner |
-| Repository | https://github.com/ntthduong/K4-L3B-MotMinhTui-Day10-Data-Pipeline-Data-Observability |
+| Repository | https://github.com/ntthduong/K4-L3B-MotMinhTui-Day10-DataPipelineDataObservability |
 | Ngày hoàn thành | 2026-09-26 |
 
 ## 2. Vai Trò Và Phạm Vi Công Việc
@@ -60,7 +60,7 @@ Pipeline RAG phụ thuộc trực tiếp vào chất lượng dữ liệu. Nếu
 
 Ingestion ưu tiên đọc normalized snapshot local khi không yêu cầu refresh để đảm bảo tái hiện ổn định. Parser chuẩn hóa DOI, title, abstract, authors, categories và ngày xuất bản thành `PaperRecord`. Cleaning loại XML/JATS tags, normalize whitespace, parse date, tính `age_days`, tạo các cột helper và build `text_for_embedding`. Quality gate dùng Great Expectations 1.x cho row count, not-null, uniqueness và text length checks; freshness đo bằng tỷ lệ stale rows có `age_days > 180`.
 
-Evaluation set gồm 10 câu hỏi thuộc 4 loại: `summary`, `authors`, `date`, `categories`. Cùng test set được dùng cho baseline, corrupted và repaired để so sánh công bằng. Corruption suite tiêm 6 lỗi có chủ đích. Repair flow không sửa trực tiếp corrupted dataset mà rebuild dữ liệu từ `data/raw/crossref_records.json`, sau đó re-clean, re-index và evaluate lại.
+Evaluation set gồm 10 câu hỏi thuộc 4 loại: `summary`, `authors`, `date`, `categories`. Cùng test set được dùng cho baseline, corrupted và repaired để so sánh công bằng. Corruption suite tiêm 6 lỗi có chủ đích theo yêu cầu đề. Repair flow không sửa trực tiếp corrupted dataset mà rebuild dữ liệu từ `data/raw/crossref_records.json`, sau đó re-clean, re-index và evaluate lại.
 
 ### Input, Output Và Contract
 
@@ -98,7 +98,7 @@ $env:PYTHONIOENCODING='utf-8'; python script/run_corruption_flow.py
 - **Nguyên nhân gốc:** Python stdout dùng encoding `cp1252`, không encode được một số ký tự tiếng Việt.
 - **Cách xử lý:** Đặt `$env:PYTHONIOENCODING='utf-8'` trước khi chạy lệnh verify.
 - **Cách xác minh sau khi sửa:** Các lệnh CP0-CP5 in đúng kết quả tiếng Việt.
-- **Điều học được:** Cần cấu hình encoding ổn định khi chạy script có Unicode trên Windows.
+- **Điều học được:** Cần cấu hình encoding ổn định khi chạy script có Unicode trên Windows và nên prompt bằng tiếng Anh =))
 
 ## 7. Hiểu Biết Về Luồng End-To-End
 
