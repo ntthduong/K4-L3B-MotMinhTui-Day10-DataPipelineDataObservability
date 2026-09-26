@@ -1,4 +1,4 @@
-<img width="959" height="543" alt="image" src="https://github.com/user-attachments/assets/13876c89-43c5-4c75-9a0f-7b6bc9ed97ac" /># Báo Cáo Individual Submission — Day 10: Data Pipeline & Data Observability
+# Báo Cáo Individual Submission — Day 10: Data Pipeline & Data Observability
 
 ## 1. Thông Tin Bài Nộp
 
